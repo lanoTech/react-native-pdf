@@ -15,7 +15,8 @@ import {
     Platform,
     ViewPropTypes,
     StyleSheet,
-    Image
+    Image,
+    ActivityIndicator
 } from 'react-native';
 
 import { ProgressBar } from '@react-native-community/progress-bar-android'
@@ -55,7 +56,6 @@ export default class Pdf extends Component {
         enableRTL: PropTypes.bool,
         fitPolicy: PropTypes.number,
         trustAllCerts: PropTypes.bool,
-        singlePage: PropTypes.bool,
         onLoadComplete: PropTypes.func,
         onPageChanged: PropTypes.func,
         onError: PropTypes.func,
@@ -89,7 +89,6 @@ export default class Pdf extends Component {
         activityIndicatorProps: {color: '#009900', progressTintColor: '#009900'},
         trustAllCerts: true,
         usePDFKit: true,
-        singlePage: false,
         onLoadProgress: (percent) => {
         },
         onLoadComplete: (numberOfPages, path) => {
@@ -375,9 +374,9 @@ export default class Pdf extends Component {
             } else if (message[0] === 'error') {
                 this._onError(new Error(message[1]));
             } else if (message[0] === 'pageSingleTap') {
-                this.props.onPageSingleTap && this.props.onPageSingleTap(Number(message[1]), Number(message[2]), Number(message[3]));
+                this.props.onPageSingleTap && this.props.onPageSingleTap(message[1], message[2], message[3]);
             } else if (message[0] === 'scaleChanged') {
-                this.props.onScaleChanged && this.props.onScaleChanged(Number(message[1]));
+                this.props.onScaleChanged && this.props.onScaleChanged(message[1]);
             } else if (message[0] === 'linkPressed') {
                 this.props.onPressLink && this.props.onPressLink(message[1]);
             }
@@ -402,13 +401,7 @@ export default class Pdf extends Component {
                                 {this.props.activityIndicator
                                     ? this.props.activityIndicator
                                     : Platform.OS === 'android'
-                                        ? <ProgressBar
-                                            progress={this.state.progress}
-                                            indeterminate={false}
-                                            styleAttr="Horizontal"
-                                            style={styles.progressBar}
-                                            {...this.props.activityIndicatorProps}
-                                        />
+                                        ? <ActivityIndicator color='#1279ff'/>
                                         : <ProgressView
                                             progress={this.state.progress}
                                             style={styles.progressBar}
