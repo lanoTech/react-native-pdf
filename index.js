@@ -19,7 +19,6 @@ import {
     ActivityIndicator
 } from 'react-native';
 
-import { ProgressBar } from '@react-native-community/progress-bar-android'
 import { ProgressView } from '@react-native-community/progress-view'
 
 import RNFetchBlob from 'rn-fetch-blob';
